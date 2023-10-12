@@ -34,7 +34,7 @@ while rejouer:
             rejouerQ = str(input("Voulez-vous rejouer? 'Y' ou 'N': "))
             if rejouerQ == "Y":
                 print("\n\n")
-                rejouer = True
+                reponse = False
 
 
                 nbr_essais = 0
@@ -44,4 +44,4 @@ while rejouer:
 
             else:
                 exit()
-
+                rejouer = False
