@@ -5,6 +5,7 @@ def count_word(phrase): #Fonction permet d'être appelée n'importe où et la ph
     word_count = len(phrase .split()) #Trouve le nombre de mots dans une certaine phrase
     return(word_count) #Donne le nombre de mots de la phrase
 
-
+phrase = ("HEHEHEHEHEHEH HE he")
+print("ok", count_word(phrase))
 
 
