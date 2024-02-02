@@ -1,0 +1,89 @@
+#Créé par Xavier Moorman
+
+
+import arcade, random
+
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
+COLORS = [arcade.color.BLEU_DE_FRANCE, arcade.color.ANTIQUE_RUBY, arcade.color.BABY_POWDER, arcade.color.BLUSH, arcade.color.COAL, arcade.color.CANDY_APPLE_RED, arcade.color.CANARY_YELLOW]
+
+class Ball(): #Classe ball qui définit toutes les propriétés des cercles qui seront dessinés
+    def __init__(self, pos_x, pos_y):   
+        self.pos_x = pos_x
+        self.pos_y = pos_y
+        self.change_x = random.randint(-3, 3)
+        self.change_y = random.randint(-3, 3)
+        self.color = random.choice(COLORS)
+        self.my_radius = random.randint(10, 30)
+
+    def update(self):
+        self.pos_y += self.change_y #La position des y est additionnée à la valeur random entre -3 et 3
+        self.pos_x += self.change_x #La position des x est additionnée à la valeur random entre -3 et 3
+        if self.pos_x < 0: #Les cercles qui seront dessinés inverseront leur vélocité, donc ceci sont les limites (jusqu'au prochain #)
+           self.change_x *= -1
+        if self.pos_y < 0:
+           self.change_y *= -1
+        if self.pos_x > SCREEN_WIDTH:
+           self.change_x *= -1
+        if self.pos_y > SCREEN_HEIGHT:
+           self.change_y *= -1 #Fin des limites
+
+    def my_draw(self):
+       arcade.draw_circle_filled(center_x=self.pos_x, center_y=self.pos_y, radius= self.my_radius, color= self.color) #Dessiner un cercle rempli avec toutes les valeurs nécessaires (color, radius, etc.)
+
+
+
+class Rectangle(): #Classe rectangle qui définit toutes les propriétés des rectangles qui seront dessinés
+    def __init__(self, pos_x, pos_y):    
+        self.pos_x = pos_x
+        self.pos_y = pos_y
+        self.change_x = random.randint(-3, 3)
+        self.change_y = random.randint(-3, 3)
+        self.color = random.choice(COLORS)
+        self.my_radius = random.randint(10, 30)
+        self.my_width = random.randint(15, 40)
+        self.my_height = random.randint(15, 45)
+
+    def update(self): 
+        self.pos_y += self.change_y #Même chose que Ball() (jusqu'au prochain #)
+        self.pos_x += self.change_x 
+        if self.pos_x < 0:          
+           self.change_x *= -1      
+        if self.pos_y < 0:          
+           self.change_y *= -1
+        if self.pos_x > SCREEN_WIDTH:
+           self.change_x *= -1
+        if self.pos_y > SCREEN_HEIGHT:
+           self.change_y *= -1      #Même chose que Ball()
+  
+    def my_draw(self):
+       arcade.draw_rectangle_filled(center_x=self.pos_x, center_y=self.pos_y, color=self.color, width=self.my_width, height=self.my_height) #Dessiner un rectangle rempli avec toutes les valeurs nécessaires (color, height, width, etc.)
+
+class MyGame(arcade.Window):
+    def __init__(self, width, height):
+        super().__init__(width, height, "Exercice #1")
+        self.shapes_list = []
+
+        arcade.set_background_color(arcade.color.BLACK_OLIVE) #Background de l'exercice
+
+    def on_draw(self):
+        arcade.start_render()
+        for obj in self.shapes_list:
+            obj.my_draw()
+            obj.update()
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        if button == arcade.MOUSE_BUTTON_LEFT: #Quand on appuie sur le bouton gauche de la souris, un cercle se dessine sur les coordonnées de la souris
+            self.shapes_list.append(Ball(x, y))
+        if button == arcade.MOUSE_BUTTON_RIGHT: #Quand on appuie sur le bouton droit de la souris, un rectangle se dessine sur les coordonnées de la souris
+            self.shapes_list.append(Rectangle(x, y))
+
+def main():
+   my_game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
+   my_game.on_draw()
+
+   arcade.run()
+
+main()
